@@ -628,12 +628,10 @@ abstract class BaseFacebook
       array_merge(array(
                     'client_id' => $this->getAppId(),
                     'redirect_uri' => urlencode($this->getCurrentUrl()))));
-
-        $signed_request = $this->getSignedRequest();
         /**
          * Verify $signed_requestrequest 
          */
-        $payload =$this->parseSignedRequest($signed_request);
+        $payload =$this->parseSignedRequest($this->getSignedRequest());
         if(empty($payload)){
             return $auth_url;
         }else{
