@@ -630,12 +630,16 @@ abstract class BaseFacebook
                     'redirect_uri' => urlencode($this->getCurrentUrl()))));
 
         $signed_request = $_REQUEST["signed_request"];
-
-        list($encoded_sig, $payload) = explode('.', $signed_request, 2);
-
-        $data = json_decode(base64_decode(strtr($payload, '-_', '+/')),
-            true);
+        /**
+         * Verify $signed_requestrequest 
+         */
+        $payload =$this->parseSignedRequest($signed_request);
+        if(empty($payload)){
+            return $auth_url;
+        }else{
+        $data = json_decode($payload,true);
         return empty($data["user_id"]) ? $auth_url  : $this->getCurrentUrl();
+    }
   }
 
   /**
