@@ -624,21 +624,20 @@ abstract class BaseFacebook
    * - no_session: the URL to go to if the user is not connected
    * - no_user: the URL to go to if the user is not signed into facebook
    *
-   * @param array $params Provide custom parameters
    * @return string The URL for the logout flow
    */
-  public function getLoginStatusUrl($params=array()) {
-    return $this->getUrl(
-      'www',
-      'extern/login_status.php',
-      array_merge(array(
-        'api_key' => $this->getAppId(),
-        'no_session' => $this->getCurrentUrl(),
-        'no_user' => $this->getCurrentUrl(),
-        'ok_session' => $this->getCurrentUrl(),
-        'session_version' => 3,
-      ), $params)
-    );
+  public function getLoginStatusUrl() {
+    $auth_url       = "https://www.facebook.com/dialog/oauth?client_id="
+        . $this->appId. "&redirect_uri=" . urlencode($this->getCurrentUrl());
+
+        $signed_request = $_REQUEST["signed_request"];
+
+        list($encoded_sig, $payload) = explode('.', $signed_request, 2);
+
+        $data = json_decode(base64_decode(strtr($payload, '-_', '+/')),
+            true);
+
+        return empty($data["user_id"]) ? $auth_url  : $this->getCurrentUrl();
   }
 
   /**
