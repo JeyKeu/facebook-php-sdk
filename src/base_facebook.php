@@ -619,16 +619,15 @@ abstract class BaseFacebook
   /**
    * Get a login status URL to fetch the status from Facebook.
    *
-   * The parameters:
-   * - ok_session: the URL to go to if a session is found
-   * - no_session: the URL to go to if the user is not connected
-   * - no_user: the URL to go to if the user is not signed into facebook
-   *
    * @return string The URL for the logout flow
    */
   public function getLoginStatusUrl() {
-    $auth_url       = "https://www.facebook.com/dialog/oauth?client_id="
-        . $this->appId. "&redirect_uri=" . urlencode($this->getCurrentUrl());
+      $auth_url = $this->getUrl(
+      'www',
+      'dialog/oauth',
+      array_merge(array(
+                    'client_id' => $this->getAppId(),
+                    'redirect_uri' => urlencode($this->getCurrentUrl()))));
 
         $signed_request = $_REQUEST["signed_request"];
 
@@ -636,7 +635,6 @@ abstract class BaseFacebook
 
         $data = json_decode(base64_decode(strtr($payload, '-_', '+/')),
             true);
-
         return empty($data["user_id"]) ? $auth_url  : $this->getCurrentUrl();
   }
 

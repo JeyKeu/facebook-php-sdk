@@ -731,9 +731,7 @@ class PHPSDKTestCase extends PHPUnit_Framework_TestCase {
     $encodedUrl1 = rawurlencode('http://fbrell.com/examples');
     $okUrl = 'http://fbrell.com/here1';
     $encodedUrl2 = rawurlencode($okUrl);
-    $loginStatusUrl = $facebook->getLoginStatusUrl(array(
-      'ok_session' => $okUrl,
-    ));
+    $loginStatusUrl = $facebook->getLoginStatusUrl();
     $this->assertNotNull(strpos($loginStatusUrl, $encodedUrl1),
                          'Expect the current url to exist.');
     $this->assertNotNull(strpos($loginStatusUrl, $encodedUrl2),
