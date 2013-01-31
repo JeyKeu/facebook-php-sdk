@@ -629,7 +629,7 @@ abstract class BaseFacebook
                     'client_id' => $this->getAppId(),
                     'redirect_uri' => urlencode($this->getCurrentUrl()))));
 
-        $signed_request = $_REQUEST["signed_request"];
+        $signed_request = $this->getSignedRequest();
         /**
          * Verify $signed_requestrequest 
          */
